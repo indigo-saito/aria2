@@ -18,6 +18,7 @@ jobs:
 
     - name: Setup dependencies
       run: |
+        sudo dpkg --add-architecture arm64
         sudo apt-get update
         sudo apt-get install -y \
           gcc-aarch64-linux-gnu \
@@ -29,12 +30,12 @@ jobs:
           autopoint \
           libtool \
           pkg-config \
-          libssl-dev \
-          libgnutls28-dev \
-          libc-ares-dev \
-          zlib1g-dev \
-          libsqlite3-dev \
-          libssh2-1-dev \
+          libssl-dev:arm64 \
+          libgnutls28-dev:arm64 \
+          libc-ares-dev:arm64 \
+          zlib1g-dev:arm64 \
+          libsqlite3-dev:arm64 \
+          libssh2-1-dev:arm64 \
           qemu-user-static \
           binfmt-support
 
@@ -46,7 +47,9 @@ jobs:
         echo "AR=aarch64-linux-gnu-ar" >> $GITHUB_ENV
         echo "RANLIB=aarch64-linux-gnu-ranlib" >> $GITHUB_ENV
         echo "STRIP=aarch64-linux-gnu-strip" >> $GITHUB_ENV
-        echo "PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig" >> $GITHUB_ENV
+        echo "PKG_CONFIG_PATH=/usr/aarch64-linux-gnu/lib/pkgconfig:/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig" >> $GITHUB_ENV
+        echo "CPPFLAGS=-I/usr/include/aarch64-linux-gnu" >> $GITHUB_ENV
+        echo "LDFLAGS=-L/usr/lib/aarch64-linux-gnu" >> $GITHUB_ENV
 
     - name: Autoreconf
       run: |
